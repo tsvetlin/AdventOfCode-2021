@@ -3,20 +3,9 @@ const fs = require('fs')
 function main(){
   const file = fs.readFileSync('input.txt', {encoding:'utf8', flag:'r'}).split('\n')
   
-  const bingoNumbers = file[0].split(',')
+  let bingoNumbers = initBingoNumbers(file)
   
-  let bingoBoards = {}
-  let index = 0;
-  for(let i = 2; i< file.length; i+=6){
-    bingoBoards[index] = [
-      file[i].trim().split(/\s+/),
-      file[i + 1].trim().split(/\s+/),
-      file[i + 2].trim().split(/\s+/),
-      file[i + 3].trim().split(/\s+/),
-      file[i + 4].trim().split(/\s+/),
-    ]
-    index++;
-  }
+  let bingoBoards = initBingoBoards(file)
 
   //console.log(bingoBoards)
 
@@ -36,7 +25,50 @@ function main(){
     }
   }
 
+  // part one solution
   console.log(winnerBoardSum * lastBingoNumber)
+
+  bingoNumbers = initBingoNumbers(file)
+  bingoBoards = initBingoBoards(file)
+  let lastBoardSum
+
+  while(Object.keys(bingoBoards).length) {
+    lastBingoNumber = bingoNumbers.shift()
+    for(const key in bingoBoards){  
+      const bingoBoard = bingoBoards[key]
+      markNumber(bingoBoard, String(lastBingoNumber))
+      boardWon = isBoardWon(bingoBoard)
+      if(boardWon) {
+        if(Object.keys(bingoBoards).length === 1){
+          lastBoardSum = sumBoard(bingoBoards[key])
+        }
+        delete bingoBoards[key]    
+      }
+    }
+  }
+  // part two result
+  console.log(lastBingoNumber * lastBoardSum)
+}
+
+function initBingoBoards(file){
+  let bingoBoards = {}
+  let index = 0;
+  for(let i = 2; i< file.length; i+=6){
+    bingoBoards[index] = [
+      file[i].trim().split(/\s+/),
+      file[i + 1].trim().split(/\s+/),
+      file[i + 2].trim().split(/\s+/),
+      file[i + 3].trim().split(/\s+/),
+      file[i + 4].trim().split(/\s+/),
+    ]
+    index++;
+  }
+
+  return bingoBoards
+}
+
+function initBingoNumbers(file) {
+  return file[0].split(',')
 }
 
 function isBoardWon(bingoBoard){
