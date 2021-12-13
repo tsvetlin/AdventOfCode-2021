@@ -4,7 +4,6 @@ function main(){
   const file = fs.readFileSync('input.txt', {encoding:'utf8', flag:'r'}).split('\n')
   
   const bingoNumbers = file[0].split(',')
-  console.log(bingoNumbers.length)
   
   let bingoBoards = {}
   let index = 0;
@@ -26,21 +25,18 @@ function main(){
   let winnerBoardSum;
   while(!boardWon){
     lastBingoNumber = bingoNumbers.shift()
-    console.log(bingoNumbers.length)
     for(const key in bingoBoards){  
       const bingoBoard = bingoBoards[key]
       markNumber(bingoBoard, String(lastBingoNumber))
       boardWon = isBoardWon(bingoBoard)
-     console.log(boardWon)
       if(boardWon) {
         winnerBoardSum = sumBoard(bingoBoard)
-        console.log('!!!', sumBoard(bingoBoard), bingoBoard)
        break;
       }
     }
   }
 
-  console.log(lastBingoNumber, winnerBoardSum * lastBingoNumber)
+  console.log(winnerBoardSum * lastBingoNumber)
 }
 
 function isBoardWon(bingoBoard){
