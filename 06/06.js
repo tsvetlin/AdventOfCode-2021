@@ -19,7 +19,7 @@ function main(){
 
   // part two result
   console.log(result)
-  
+} 
 
 // Math.ceil((currentDay - initialAge) / cycle)
 const kids = (initialAge, currentDay, cycle) => {
