@@ -40,14 +40,11 @@ function main(){
         }
       }
   }
-
- // console.log(map)
-  // part one result
+  // part one/two result
   console.log(overlapCount())
 }
 
 function visualizeOnMap({x1, x2, y1, y2}){
-  // console.log(x1, x2, y1, y2)
   if(x1 === x2) {
     if(y1 <= y2){
       for(let i = y1; i <= y2; i++){
@@ -62,16 +59,13 @@ function visualizeOnMap({x1, x2, y1, y2}){
   }
 
   if(y1 === y2){
-   // console.log('here')
     if(x1 <= x2){
       for(let i = x1; i <= x2; i++){
         markMap(i, y1)
       }
     }
     if(x1 > x2){
-   //   console.log('here too!')
       for(let i = x1; i>= x2; i--){
-    //    console.log('i have to run', i, y1)
         markMap(i, y1)
       }
     }
@@ -80,10 +74,8 @@ function visualizeOnMap({x1, x2, y1, y2}){
 
 function visualizeDiagonalOnMap({x1, x2, y1, y2}){
   if(x1 === y1 && x2 === y2){
-    console.log('f')
     if(x1 <= x2){
       for(let i = x1; i<=x2; i++){
-       // console.log('mark', i, i)
         markMap(i, i)
       }
     }
@@ -95,21 +87,16 @@ function visualizeDiagonalOnMap({x1, x2, y1, y2}){
     return
   }
   if(x1 === y2 && y1 === x2){
-    console.log('f')
     if(x1 <= x2){
       let index = 0
-     // console.log('x1 <= x2')
       for(let i = x1; i <= x2; i++){
-      //  console.log('x1 <= x2', i, y1-index)
         markMap(i, y1-index)
         index++
       }
     }
     if(x1 > x2){
       let index = 0;
-     // console.log('x1 > x2')
       for(let i = x1; i >= x2; i--){
-      //  console.log('x1 > x2', i, y1+index)
         markMap(i, y1+index)
         index++
       }
@@ -117,8 +104,10 @@ function visualizeDiagonalOnMap({x1, x2, y1, y2}){
     return
   }
 
-  if(x1 >= x2 && y1 >= y2){
-    console.log('a')
+  if(
+    (x1 >= x2 && y1 >= y2) ||
+    (x1 > y1 && x2 === y2)
+    ){
     let index = 0;
     for(let i = x1; i >= x2; i--){
       markMap(i, y1 - index)
@@ -127,31 +116,12 @@ function visualizeDiagonalOnMap({x1, x2, y1, y2}){
     return
   }
 
-  if((x1 <= x2 && y1 <= y2) ||
-  (x1 === y1 && x2 > y2)){
-    console.log('b')
+  if(
+    (x1 <= x2 && y1 <= y2) ||
+    (x1 === y1 && x2 > y2)
+    ){
     let index = 0;
     for(let i = x1; i <= x2; i++){
-      markMap(i, y1 + index)
-      index++
-    }
-    return
-  }
-/*
-  if(x1 === y1 && x2 > y2){
-    console.log('c')
-    let index = 0
-    for(let i = x1; i <= x2; i++){
-      markMap(i, y1 - index)
-      index++
-    }
-    return
-  }*/
-
-  if(x1 > y1 && x2 === y2) {
-    console.log('d')
-    let index = 0
-    for(let i = x1; i >= x2; i--){
       markMap(i, y1 + index)
       index++
     }
@@ -159,7 +129,6 @@ function visualizeDiagonalOnMap({x1, x2, y1, y2}){
   }
 
   if(x1 >= x2 && y1 <= y2){
-    console.log('g')
     let index = 0
     for(let i = x1; i>=x2; i--){
       markMap(i, y1 + index)
@@ -167,8 +136,8 @@ function visualizeDiagonalOnMap({x1, x2, y1, y2}){
     }
     return
   }
+
   if(x1 <= x2 && y1 >= y2){
-    console.log('f')
     let index = 0
     for(let i = x1; i<=x2; i++){
       markMap(i, y1 - index)
@@ -176,7 +145,6 @@ function visualizeDiagonalOnMap({x1, x2, y1, y2}){
     }
     return
   }
-  console.log('no match', x1, y1, x2, y2)
 }
 
 function markMap(x, y){
