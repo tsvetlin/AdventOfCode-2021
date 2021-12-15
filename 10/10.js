@@ -13,6 +13,7 @@ const chunks = fs.readFileSync('input.txt', {encoding:'utf8', flag:'r'}).split('
 } 125
 */
 let errorSum = 0
+let autocorrectValues = []
 
 for(const chunk of chunks){
   let erroneusChar
@@ -34,7 +35,6 @@ for(const chunk of chunks){
   }
 
   if(erroneusChar){
-  //  console.log('error', erroneusChar)
     if(erroneusChar === 41){
       errorSum += 3
     }
@@ -47,13 +47,37 @@ for(const chunk of chunks){
     if(erroneusChar === 62){
       errorSum += 25137
     }
-
   } else if(prev.length){
-   //   console.log('incomplete')
+    const chars = prev.map((n) => String.fromCharCode(n))
+    let localAutoCorrectSum = 0
+    for(let i = prev.length - 1; i >= 0; i--){
+      localAutoCorrectSum *=5
+
+      if(prev[i] === 40){
+        localAutoCorrectSum += 1
+      }
+
+      if(prev[i] === 91) {
+        localAutoCorrectSum += 2
+      }
+
+      if(prev[i] === 123) {
+        localAutoCorrectSum += 3
+      }
+
+      if(prev[i] === 60) {
+        localAutoCorrectSum += 4
+      } 
+    }
+    autocorrectValues.push(localAutoCorrectSum)
   } else {
    // console.log('complete')
   }
 
 }
-
+// part one result
 console.log(errorSum)
+
+autocorrectValues.sort((a, b) => b - a )
+// part two result
+console.log(autocorrectValues[(autocorrectValues.length - 1) / 2])
