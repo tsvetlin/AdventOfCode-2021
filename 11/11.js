@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const dumboCave = fs.readFileSync('input.txt', {encoding:'utf8', flag:'r'}).split('\n').map(line => line.split('').map(e => +e))
+let dumboCave = fs.readFileSync('input.txt', {encoding:'utf8', flag:'r'}).split('\n').map(line => line.split('').map(e => +e))
 //console.log(dumboCave)
 let flashCount = 0;
 
@@ -66,21 +66,46 @@ const flash = ({ x, y }) => {
   }
 }
 
+const areDumbosSynchronized = () => {
+  let areThey = true
+  for(let y = 0; y < dumboCave.length; y++){
+    for(let x = 0; x < dumboCave[y].length; x++){
+      if(dumboCave[y][x] !== 0){
+        areThey = false
+      }
+    }
+  }
+
+  return areThey
+}
+
+const dumboDay = () => {
+  increaseValue()
+  let arrayOfNine = whosAGoodBoy()
+  while(arrayOfNine.length){
+    for(const pos of arrayOfNine){
+      flash(pos)
+    }
+    arrayOfNine = whosAGoodBoy()
+  }
+}
+
 const main = () => {
   const maxSteps = 100;
   for(let step = 0; step < maxSteps; step++){
-    increaseValue()
-    let arrayOfNine = whosAGoodBoy()
-    while(arrayOfNine.length){
-      for(const pos of arrayOfNine){
-        flash(pos)
-      }
-      arrayOfNine = whosAGoodBoy()
-    }
-    //console.log(`Day ${step + 1}: `,dumboCave)
+    dumboDay()
+   // console.log(`Day ${step + 1}: `,dumboCave)
   }
   // part one result
   console.log(flashCount)
+
+  dumboCave = fs.readFileSync('input.txt', {encoding:'utf8', flag:'r'}).split('\n').map(line => line.split('').map(e => +e))
+  let firstSyncStep = 0
+  while(!areDumbosSynchronized()){
+    dumboDay()
+    firstSyncStep++
+  }
+  console.log(firstSyncStep)
 }
 
 main()
